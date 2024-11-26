@@ -1,0 +1,100 @@
+.search {
+  padding: 20px;
+  color: white;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filters keyword-input{
+  width: 30rem;
+  height: 40px;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #000;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: none;
+  transition: all 0.4s ease-in-out; /* 부드러운 애니메이션 */
+}
+
+.filters select{
+  padding: 10px 15px;
+  font-size: 1rem;
+  background-color: rgb(50, 50, 90);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filters reset-button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  background-color: rgb(50, 50, 50);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filters input:focus,
+.filters filter-select:focus,
+.filters reset-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 최소 크기 200px, 최대 1fr */
+  gap: 20px;
+  justify-items: center; /* 포스터 중앙 정렬 */
+}
+
+.movie-grid > div {
+  width: 200px; /* 포스터 크기 고정 */
+  height: 330px;
+  overflow: hidden;
+}
+
+.movie-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 포스터 비율 유지 */
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0.8;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.scroll-to-top:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.scroll-to-top:active {
+  transform: scale(1);
+}

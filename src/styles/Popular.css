@@ -1,0 +1,53 @@
+.popular {
+  padding: 20px;
+}
+
+.popular h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 포스터 크기 고정 */
+  gap: 20px; /* 카드 간격 조정 */
+  justify-items: center; /* 포스터 중앙 정렬 */
+}
+
+.movie-grid > div {
+  padding: 20px; /* 각 포스터 주변 패딩 추가 */
+  box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
+}
+
+.end-message {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 20px;
+  color: #666;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0.8;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.scroll-to-top:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.scroll-to-top:active {
+  transform: scale(1);
+}

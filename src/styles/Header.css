@@ -1,0 +1,312 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: rgba(20, 20, 20, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  white-space: nowrap; /* 글씨가 한 줄로 유지되도록 설정 */
+}
+
+.header-logo a {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.header-nav ul {
+  display: flex;
+  list-style: none;
+  align-items: center; /* 세로 중앙 정렬 추가 */
+  margin: 0;
+  padding: 0;
+}
+
+.header-nav ul li {
+  display: flex; /* `a` 요소와 버튼의 세로 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  margin: 0 10px;
+}
+
+.header-nav ul li a {
+  display: flex; /* 부모 요소에서 세로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  font-size: 1rem;
+  color: white;
+  padding: 5px 15px;
+  margin: 0 10px;
+  border: none;
+  border-radius: 4px;
+  white-space: nowrap; /* 글씨가 한 줄로 유지되도록 설정 */
+  transition: background 0.3s ease;
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+.header-nav ul li a:hover {
+  color: #e50914;
+}
+
+.header-nav button{
+  color: #787878;
+  background-color: #292929;
+  border-radius: 50px;
+  margin: 10px;
+  border-color: #e50914;
+}
+
+.header-nav button:hover{
+  color: #000;
+  background-color: #e50914;
+}
+
+.header-nav ul li button {
+  display: flex; /* 부모 요소에서 세로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  color: #787878;
+  background-color: #292929;
+  border-radius: 50px;
+  margin: 10px;
+  border-color: #e50914;
+}
+
+.header-nav ul li button:hover {
+  color: #000;
+  background-color: #e50914;
+}
+
+.logout-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content p {
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.modal-content button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-content .close-button {
+  position: absolute;
+  color: #000;
+  top: 20px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: none;
+  font-size: 3rem;
+  cursor: pointer;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.close-button:hover {
+  transform: rotate(90deg);
+  background-color: none;
+}
+
+/* 로그아웃 모달 */
+.logout-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.5s ease-in-out;
+  z-index: 1000;
+}
+
+.logout-modal-content {
+  background: white;
+  color: #000;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  animation: scaleIn 0.3s ease-in-out;
+}
+
+.logout-modal-content p {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+/* 버튼 컨테이너를 좌우 배치 */
+.logout-modal-buttons {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  white-space: nowrap; /* 글씨가 한 줄로 유지되도록 설정 */
+}
+
+.logout-modal-content button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap; /* 글씨가 한 줄로 유지되도록 설정 */
+}
+
+.logout-modal-content button:hover {
+  background-color: #0056b3;
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 메뉴 아이콘 */
+.menu-icon {
+  display: none; /* 기본적으로 숨김 */
+  font-size: 2rem;
+  cursor: pointer;
+  color: #fff;
+}
+
+
+/* 작은 화면에서 메뉴 스타일 */
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block; /* 메뉴 아이콘 표시 */
+  }
+
+  .header-nav {
+    display: none; /* 기본적으로 숨김 */
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: rgba(20, 20, 20, 0.9);
+    flex-direction: column;
+    padding: 20px 0;
+  }
+
+  .header-nav.active {
+    display: flex; /* 활성화 시 표시 */
+  }
+
+  .header-nav ul {
+    flex-direction: column; /* 세로 배치 */
+    gap: 10px;
+  }
+
+  .header-nav ul li {
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .header-nav ul li a {
+    font-size: 1.2rem;
+    color: white;
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+
+  .header-nav ul li button {
+    color: #787878;
+    background-color: #292929;
+    border-radius: 50px;
+    margin: 10px;
+    border-color: #e50914;
+  }
+
+  .header-nav ul li button:hover {
+    color: #000;
+    background-color: #e50914;
+  }
+
+  .logout-menu-button {
+    color: #787878;
+    background-color: #292929;
+    border-radius: 50px;
+    margin: 10px;
+    border-color: #e50914;
+  }
+
+  .logout-menu-button:hover {
+    color: #000;
+    background-color: #e50914;
+  }
+}
+/* 위로가기 버튼 */
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: #e50914;
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: scale(0);
+}
+
+.scroll-to-top.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.scroll-to-top:hover {
+  background: #f40612;
+}

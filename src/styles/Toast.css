@@ -1,0 +1,51 @@
+.toast {
+  position: fixed;
+  top: 50%; /* 화면 중앙 */
+  left: 50%; /* 화면 중앙 */
+  transform: translate(-50%, -50%); /* 중앙 정렬 */
+  background: #333;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  text-align: center;
+  z-index: 1000; /* 다른 요소 위로 */
+  animation: fadeInOut 3s ease-in-out; /* 페이드 애니메이션 */
+}
+
+
+.toast.success {
+  background-color: #28a745;
+}
+
+.toast.error {
+  background-color: #dc3545;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%); /* 살짝 위에서 시작 */
+  }
+  10%, 90% {
+    opacity: 1;
+    transform: translate(-50%, -50%); /* 정확히 중앙 */
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -40%); /* 살짝 아래로 사라짐 */
+  }
+}

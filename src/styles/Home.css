@@ -1,0 +1,135 @@
+.home {
+  padding: 20px;
+}
+
+.home h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px; /* 카드 간격 조정 */
+  justify-items: center; /* 포스터 중앙 정렬 */
+}
+
+.movie-grid > div {
+  padding: 20px; /* 각 포스터 주변 패딩 추가 */
+  box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
+}
+
+.end-message {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 1rem;
+  color: #aaa;
+}
+
+.banner {
+  position: relative;
+  height: 70vh; /* 배너 높이 */
+  background-size: cover;
+  background-position: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+}
+
+.banner-overlay {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* 어두운 오버레이 */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 50px; /* 텍스트 위치 */
+}
+
+.banner-content {
+  max-width: 600px;
+}
+
+.banner-content h1 {
+  font-size: 3rem; /* 큰 제목 */
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8); /* 텍스트 그림자 */
+}
+
+.banner-content p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin-bottom: 30px;
+  color: #fff;
+  text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8); /* 텍스트 그림자 */
+}
+
+.banner-buttons {
+  display: flex;
+  
+  gap: 15px;
+}
+
+.play-button,
+.details-button {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  width: 100px;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.play-button:hover,
+.details-button:hover {
+  background-color: rgba(255, 255, 255, 1);
+  transform: scale(1.05);
+}
+
+.details-button {
+  background-color: rgba(109, 109, 110, 0.8);
+  color: rgb(0, 0, 0);
+}
+
+.movie-slider {
+  margin: 20px 0;
+}
+
+.movie-slider h2 {
+  font-size: 1.5rem;
+  margin: 10px 20px;
+}
+
+.slider-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 5px 20px;
+}
+
+.slider-container::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .banner-content h1 {
+    font-size: 2rem;
+  }
+
+  .banner-content p {
+    font-size: 1rem;
+    color: #fff;
+  }
+
+  .banner-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

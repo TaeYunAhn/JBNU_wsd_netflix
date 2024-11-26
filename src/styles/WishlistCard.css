@@ -1,0 +1,61 @@
+.wishlist-card {
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  align-items: center;
+  margin: 10px;
+  background: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* 확대 효과 추가 */
+}
+
+.wishlist-card:hover {
+  transform: scale(1.05); /* hover 시 카드 전체 확대 */
+}
+
+.wishlist-poster {
+  width: 120px; /* 고정된 너비 */
+  aspect-ratio: 2 / 3; /* 포스터 비율 유지 (2:3) */
+  object-fit: cover; /* 이미지를 비율에 맞게 채우기 */
+  border-radius: 5px;
+  margin-bottom: 10px; /* 포스터와 버튼 간 간격 */
+  transition: transform 0.3s ease; /* 포스터 hover 효과 */
+}
+
+.wishlist-poster:hover {
+  transform: scale(1.05); /* 포스터만 확대 */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* 포스터 hover 시 그림자 추가 */
+}
+
+.wishlist-details {
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  align-items: center; /* 가운데 정렬 */
+}
+
+.wishlist-details h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+.remove-btn {
+  padding: 5px 20px;
+  background: none; /* 버튼 배경 제거 */
+  color: #4c4c4c;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease; /* hover 효과 추가 */
+  white-space: nowrap; /* 글씨가 한 줄로 유지되도록 설정 */
+  text-overflow: ellipsis; /* 글씨가 길면 생략 표시 */
+  overflow: hidden; /* 내용이 넘치면 숨김 */
+}
+
+.remove-btn:hover {
+  background: #f40612; /* hover 시 버튼 배경 변경 */
+  color: #fff; /* hover 시 글자색 변경 */
+  transform: scale(1.05); /* 버튼만 확대 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* 버튼 hover 시 그림자 추가 */
+}

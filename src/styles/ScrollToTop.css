@@ -1,0 +1,29 @@
+/* 위로가기 버튼 스타일 */
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: #e50914;
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: scale(0);
+}
+
+.scroll-to-top.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.scroll-to-top:hover {
+  background: #f40612;
+}
