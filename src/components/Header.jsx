@@ -23,7 +23,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-logo">
-        <Link to="/">🎬 Niraaah-flix</Link>
+        <Link to="/">🎬 JBNU 시네마</Link>
       </div>
       <div className="menu-icon" onClick={() => setIsMenuOpen((prev) => !prev)}>
         ☰
