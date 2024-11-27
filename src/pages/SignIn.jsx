@@ -107,56 +107,68 @@ const SignIn = () => {
     setErrors({});
     const { email, password, confirmPassword, apiKey, agreeTerms, username } = formData;
     const errors = {};
-
+  
     if (!validateEmail(email)) errors.email = '유효하지 않은 이메일 형식입니다.';
     if (password !== confirmPassword) errors.confirmPassword = '비밀번호가 일치하지 않습니다.';
     if (!agreeTerms) errors.agreeTerms = '약관에 동의해야 합니다.';
     if (!apiKey) errors.apiKey = 'API 키를 입력해야 합니다.';
     if (!username) errors.username = '사용자 이름을 입력해야 합니다.';
-
+  
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
       return;
     }
-
+  
     const users = JSON.parse(localStorage.getItem('users')) || [];
     if (users.some(user => user.email === email)) {
       setErrors({ email: '이미 등록된 이메일입니다.' });
       return;
     }
-
-    users.push({ email, password, apiKey, username });
+  
+    // 새 사용자 정보에 wishlist 추가
+    const newUser = {
+      email,
+      password,
+      apiKey,
+      username,
+      wishlist: []
+    };
+  
+    users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
     setToast({ message: '회원가입 성공!', type: 'success' });
     setTimeout(() => {
-      navigate('/signin');
+      setIsSignUp(false); // 로그인 폼으로 전환
     }, 2000);
   };
-
   const handleSignIn = () => {
     setErrors({});
     const { email, password, rememberMe } = formData;
-
+  
     if (!validateEmail(email)) {
       setErrors({ email: '유효하지 않은 이메일 형식입니다.' });
       return;
     }
-
+  
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const user = users.find((u) => u.email === email && u.password === password);
-
+  
     if (!user) {
       setErrors({ password: '이메일 또는 비밀번호가 올바르지 않습니다.' });
       return;
     }
-
-    // 필요한 사용자 정보만 명시적으로 저장
-    localStorage.setItem('loggedInUser', JSON.stringify({
+  
+    // 로그인 정보 저장 시 필요한 모든 정보를 포함
+    const loginData = {
       email: user.email,
       username: user.username,
-      apiKey: user.apiKey
-    }));
-
+      apiKey: user.apiKey,
+      wishlist: user.wishlist || []
+    };
+  
+    console.log('로그인 데이터:', loginData); // 디버깅용
+    localStorage.setItem('loggedInUser', JSON.stringify(loginData));
+  
     if (rememberMe) {
       localStorage.setItem('rememberMe', JSON.stringify({
         email: user.email,
@@ -165,13 +177,12 @@ const SignIn = () => {
     } else {
       localStorage.removeItem('rememberMe');
     }
-
+  
     setToast({ message: '로그인 성공! 메인 페이지로 이동합니다.', type: 'success' });
     setTimeout(() => {
       navigate('/');
     }, 2000);
   };
-
   const handleCardSwitch = () => {
     setIsSignUp((prev) => !prev);
     setErrors({}); // 에러 초기화
