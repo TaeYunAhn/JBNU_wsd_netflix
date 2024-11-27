@@ -8,7 +8,6 @@ import '../styles/Search.css';
 
 const Search = () => {
   const navigate = useNavigate();
-  const apiKey = JSON.parse(localStorage.getItem('loggedInUser'))?.apiKey;
   
   const [query, setQuery] = useState('');
   const [genres, setGenres] = useState([]);
@@ -24,7 +23,22 @@ const Search = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [showButton, setShowButton] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
+  const [apiKey, setApiKey] = useState(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    return loggedInUser?.apiKey || null;
+  });
 
+  // 찜 목록 로드 함수
+  const loadWishlist = () => {
+    const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    setWishlist([...storedWishlist]); // 새로운 배열로 업데이트해 React가 감지
+  };
+
+  useEffect(() => {
+    loadWishlist(); // 초기 로드 시 찜 목록 가져오기
+  }, []);
+  
   useEffect(() => {
     if (!apiKey) {
       navigate('/signin');
@@ -137,6 +151,12 @@ const Search = () => {
   };
 
   const handleMovieClick = (movie) => {
+    const fetchWishlist = () => {
+      const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      setWishlist(storedWishlist);
+    };
+
+    fetchWishlist();
     setSelectedMovie(movie);
     setIsModalOpen(true);
   };
@@ -144,7 +164,31 @@ const Search = () => {
   const handleCloseModal = () => {
     setSelectedMovie(null);
     setIsModalOpen(false);
+    const updatedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    setWishlist(updatedWishlist);
   };
+
+  const handleWishlistToggle = (movie) => {
+    const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    const isWishlisted = storedWishlist.some((item) => item.id === movie.id);
+
+    if (isWishlisted) {
+      const updatedWishlist = storedWishlist.filter((item) => item.id !== movie.id);
+      localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+    } else {
+      storedWishlist.push(movie);
+      localStorage.setItem('wishlist', JSON.stringify(storedWishlist));
+    }
+    loadWishlist();
+  };
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      setWishlist(storedWishlist);
+    }
+  }, [isModalOpen]);
+  
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -155,7 +199,7 @@ const Search = () => {
 
   return (
     <div className="search">
-      <h1>어떤 영화를 찾으시나요?</h1>
+      <h1>🧐 어떤 영화를 찾으시나요?</h1>
       <div className="filters">
         <input
           type="text"
@@ -208,9 +252,9 @@ const Search = () => {
           <option value="R">R - 17세 이상</option>
           <option value="NC-17">NC-17 - 18세 이상</option>
         </select>
-        <reset-button type="button" onClick={handleReset}>
+        <button type="button" onClick={handleReset}>
           초기화
-        </reset-button>
+        </button>
       </div>
 
       {loading && page === 1 ? (
@@ -220,9 +264,13 @@ const Search = () => {
       ) : (
         <div className="movie-grid">
           {movies.map((movie) => (
-            <div key={movie.id} onClick={() => handleMovieClick(movie)}>
-              <MovieCard movie={movie} />
-            </div>
+            <MovieCard
+            key={`${movie.id}-${wishlist.some((item) => item.id === movie.id)}`} // 상태 변화 강제 렌더링
+            movie={movie}
+            isWishlisted={wishlist.some((item) => item.id === movie.id)}
+            onWishlistToggle={handleWishlistToggle}
+            onClick={() => handleMovieClick(movie)}
+            />
           ))}
         </div>
       )}

@@ -12,35 +12,37 @@ const Home = () => {
   const [genreMovies, setGenreMovies] = useState([]); // 로드된 장르별 영화
   const [loadedGenres, setLoadedGenres] = useState([]); // 이미 로드된 장르
   const [genres, setGenres] = useState([]); // 전체 장르 목록
+  const [wishlist, setWishlist] = useState([]); // 찜 목록
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [apiKey, setApiKey] = useState(null);
+  const [apiKey, setApiKey] = useState(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    return loggedInUser?.apiKey || null;
+  });
+
+  // 찜 목록 로드 함수
+  const loadWishlist = () => {
+    const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    setWishlist(storedWishlist);
+  };
 
   useEffect(() => {
-    // 로그인 여부 확인: 로컬 스토리지에서 API 키를 확인
-    const storedApiKey = JSON.parse(localStorage.getItem('loggedInUser'))?.apiKey;
-    if (!storedApiKey) {
-      navigate('/signin'); // 로그인 화면으로 리다이렉트
-    } else {
-      setApiKey(storedApiKey);
-    }
-  }, [navigate]);
+    loadWishlist(); // 초기 로드 시 찜 목록 가져오기
+  }, []);
 
   useEffect(() => {
     if (apiKey) {
       const fetchInitialData = async () => {
         try {
-          // 인기 영화 데이터 가져오기
           const popularData = await TMDbAPI.getPopularMovies(apiKey);
-          setPopularMovies(popularData.results.slice(0, 10)); // 인기 영화 10개
+          setPopularMovies(popularData.results.slice(0, 10));
           setBannerMovie(
             popularData.results[Math.floor(Math.random() * popularData.results.length)]
           );
 
-          // 장르 목록 가져오기
           const genreData = await TMDbAPI.getGenres(apiKey);
-          setGenres(genreData.genres); // 전체 장르 저장
-          loadNextGenres(genreData.genres.slice(0, 5)); // 초기 5개 장르 로드
+          setGenres(genreData.genres);
+          loadNextGenres(genreData.genres.slice(0, 5));
         } catch (error) {
           console.error('Error fetching initial data:', error);
         }
@@ -49,17 +51,6 @@ const Home = () => {
       fetchInitialData();
     }
   }, [apiKey]);
-
-  useEffect(() => {
-    if (popularMovies.length > 0) {
-      const interval = setInterval(() => {
-        setBannerMovie(
-          popularMovies[Math.floor(Math.random() * popularMovies.length)]
-        );
-      }, 5000); // 5초마다 변경
-      return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 정리
-    }
-  }, [popularMovies]);
 
   const loadNextGenres = async (nextGenres) => {
     const newGenreMovies = [];
@@ -71,42 +62,23 @@ const Home = () => {
         console.error(`Error loading movies for genre: ${genre.name}`, error);
       }
     }
-    setGenreMovies((prev) => [...prev, ...newGenreMovies]); // 새로운 장르 추가
-    setLoadedGenres((prev) => [...prev, ...nextGenres]); // 로드된 장르 추가
+    setGenreMovies((prev) => [...prev, ...newGenreMovies]);
+    setLoadedGenres((prev) => [...prev, ...nextGenres]);
   };
-
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 200
-    ) {
-      const remainingGenres = genres.filter(
-        (genre) => !loadedGenres.some((loaded) => loaded.id === genre.id)
-      );
-      if (remainingGenres.length > 0) {
-        loadNextGenres(remainingGenres.slice(0, 3)); // 추가로 3개의 장르 로드
-      }
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [genres, loadedGenres]);
 
   const handleMovieClick = (movie) => {
-    setSelectedMovie(movie); // 선택된 영화 설정
-    setIsModalOpen(true); // 모달 열기
+    setSelectedMovie(movie);
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setSelectedMovie(null); // 선택된 영화 초기화
-    setIsModalOpen(false); // 모달 닫기
+    setSelectedMovie(null);
+    setIsModalOpen(false);
+    loadWishlist(); // 모달 닫힐 때 찜 목록 다시 로드
   };
 
   return (
     <div className="home">
-      {/* 랜덤 인기 영화 배너 */}
       {bannerMovie && (
         <div
           className="banner"
@@ -133,21 +105,16 @@ const Home = () => {
           </div>
         </div>
       )}
-
-      {/* 인기 영화 슬라이더 */}
-      <MovieSlider title="지금 뜨는 콘텐츠" movies={popularMovies} onMovieClick={handleMovieClick} />
-
-      {/* 장르별 슬라이더 */}
+      <MovieSlider title="지금 뜨는 콘텐츠" movies={popularMovies} onMovieClick={handleMovieClick} wishlist={wishlist} />
       {genreMovies.map(({ genreName, movies }) => (
         <MovieSlider
           key={genreName}
           title={genreName}
           movies={movies}
           onMovieClick={handleMovieClick}
+          wishlist={wishlist}
         />
       ))}
-
-      {/* 모달 */}
       {isModalOpen && selectedMovie && (
         <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
       )}

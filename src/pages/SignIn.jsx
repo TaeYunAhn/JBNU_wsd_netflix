@@ -13,6 +13,7 @@ const SignIn = () => {
     password: '',
     confirmPassword: '',
     apiKey: '',
+    username: '',
     rememberMe: false,
     agreeTerms: false,
   });
@@ -21,6 +22,7 @@ const SignIn = () => {
     password: '',
     confirmPassword: '',
     apiKey: '',
+    username: '',
     agreeTerms: ''
   });
   const [toast, setToast] = useState({ message: '', type: '' });
@@ -30,8 +32,31 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // 이미 로그인된 사용자 체크
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-    if (loggedInUser) navigate('/'); // 로그인 상태면 바로 홈 화면으로 이동
+    if (loggedInUser) {
+      navigate('/');
+      return;
+    }
+
+    // 자동 로그인 체크
+    const rememberedUser = JSON.parse(localStorage.getItem('rememberMe'));
+    if (rememberedUser) {
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const user = users.find((u) => u.email === rememberedUser.email);
+      
+      if (user) {
+        // 30일 이내인 경우에만 자동 로그인
+        const thirtyDays = 30 * 24 * 60 * 60 * 1000; // 30일을 밀리초로 변환
+        if (new Date().getTime() - rememberedUser.timestamp < thirtyDays) {
+          localStorage.setItem('loggedInUser', JSON.stringify(user));
+          navigate('/');
+        } else {
+          // 30일이 지난 경우 rememberMe 데이터 삭제
+          localStorage.removeItem('rememberMe');
+        }
+      }
+    }
   }, [navigate]);
 
   const validateEmail = (email) => {
@@ -80,13 +105,14 @@ const SignIn = () => {
 
   const handleSignUp = () => {
     setErrors({});
-    const { email, password, confirmPassword, apiKey, agreeTerms } = formData;
+    const { email, password, confirmPassword, apiKey, agreeTerms, username } = formData;
     const errors = {};
 
     if (!validateEmail(email)) errors.email = '유효하지 않은 이메일 형식입니다.';
     if (password !== confirmPassword) errors.confirmPassword = '비밀번호가 일치하지 않습니다.';
     if (!agreeTerms) errors.agreeTerms = '약관에 동의해야 합니다.';
     if (!apiKey) errors.apiKey = 'API 키를 입력해야 합니다.';
+    if (!username) errors.username = '사용자 이름을 입력해야 합니다.';
 
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
@@ -94,16 +120,16 @@ const SignIn = () => {
     }
 
     const users = JSON.parse(localStorage.getItem('users')) || [];
-    if (users.some((user) => user.email === email)) {
+    if (users.some(user => user.email === email)) {
       setErrors({ email: '이미 등록된 이메일입니다.' });
       return;
     }
 
-    users.push({ email, password, apiKey });
+    users.push({ email, password, apiKey, username });
     localStorage.setItem('users', JSON.stringify(users));
-    setToast({ message: '회원가입 성공! 로그인 페이지로 이동합니다.', type: 'success' });
+    setToast({ message: '회원가입 성공!', type: 'success' });
     setTimeout(() => {
-      setIsSignUp(false);
+      navigate('/signin');
     }, 2000);
   };
 
@@ -124,9 +150,18 @@ const SignIn = () => {
       return;
     }
 
-    localStorage.setItem('loggedInUser', JSON.stringify(user));
+    // 필요한 사용자 정보만 명시적으로 저장
+    localStorage.setItem('loggedInUser', JSON.stringify({
+      email: user.email,
+      username: user.username,
+      apiKey: user.apiKey
+    }));
+
     if (rememberMe) {
-      localStorage.setItem('rememberMe', email);
+      localStorage.setItem('rememberMe', JSON.stringify({
+        email: user.email,
+        timestamp: new Date().getTime()
+      }));
     } else {
       localStorage.removeItem('rememberMe');
     }
@@ -212,6 +247,14 @@ const SignIn = () => {
           <div className="card back">
             <h2>계정 생성</h2>
             <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="사용자 이름"
+            />
+            {errors.username && <div className="error">{errors.username}</div>}
+            <input
               type="email"
               name="email"
               value={formData.email}
@@ -263,12 +306,12 @@ const SignIn = () => {
       {showTermsModal && (
         <div className={`terms-modal-overlay ${isClosing ? 'fade-out' : ''}`}>
           <div className={`terms-modal-content ${isClosing ? 'pop-out' : ''}`}>
-          <button className="terms-close-button" onClick={handleCloseModal}>
+            <button className="terms-close-button" onClick={handleCloseModal}>
               &times;
             </button>
             <ReactMarkdown className="markdown-content">{termsContent}</ReactMarkdown>
+          </div>
         </div>
-      </div>
       )}
       {toast.message && <Toast message={toast.message} type={toast.type} />}
     </div>

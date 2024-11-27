@@ -5,27 +5,31 @@ const MovieCard = ({ movie, onClick }) => {
   const { poster_path, title, id } = movie;
   const [isWishlisted, setIsWishlisted] = useState(false);
 
+  // 찜 목록 로컬스토리지에서 불러오기
   useEffect(() => {
-    // 로컬스토리지에서 찜 목록 확인
     const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
     const isInWishlist = wishlist.some((item) => item.id === id);
     setIsWishlisted(isInWishlist);
   }, [id]);
 
+  // 찜하기 버튼 클릭 처리
   const handleWishlistClick = (e) => {
-    e.stopPropagation(); // 부모의 onClick 이벤트 전파 방지
-    const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    e.stopPropagation(); // 부모 요소로의 클릭 이벤트 전파 방지
+    
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
     if (isWishlisted) {
-      // 이미 찜한 경우 제거
-      const updatedWishlist = wishlist.filter((item) => item.id !== id);
-      localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+      // 이미 찜 목록에 있는 경우 -> 제거
+      wishlist = wishlist.filter((item) => item.id !== id);
       setIsWishlisted(false);
     } else {
-      // 찜하지 않은 경우 추가
+      // 찜 목록에 없는 경우 -> 추가
       wishlist.push(movie);
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
       setIsWishlisted(true);
     }
+
+    // 찜 목록 로컬스토리지에 업데이트
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
   };
 
   return (
@@ -33,7 +37,7 @@ const MovieCard = ({ movie, onClick }) => {
       <img
         src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
         alt={title || "Movie Poster"}
-        className="movie-poster"
+        className={`movie-poster ${isWishlisted ? 'wishlisted' : ''}`}
         onClick={onClick}
       />
       <div className="movie-details">

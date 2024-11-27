@@ -17,7 +17,17 @@ const Popular = () => {
   const [showButton, setShowButton] = useState(false); // 맨 위로 버튼 표시 상태
   const [wishlist, setWishlist] = useState([]);
   
+  const loadWishlist = () => {
+    const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    setWishlist([...storedWishlist]); // 새로운 배열로 업데이트해 React가 감지
+  };
 
+
+  // 초기 찜 목록 로드
+  useEffect(() => {
+    loadWishlist();
+  }, []);
+  
   // API 호출 함수
   const fetchPopularMovies = async (currentPage) => {
     if (!apiKey || loading) return;
@@ -75,6 +85,12 @@ const Popular = () => {
 
   // 영화 클릭 시 모달 열기
   const handleMovieClick = (movie) => {
+    const fetchWishlist = () => {
+      const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      setWishlist(storedWishlist);
+    };
+
+    fetchWishlist();
     setSelectedMovie(movie);
     setIsModalOpen(true);
   };
@@ -83,21 +99,33 @@ const Popular = () => {
   const handleCloseModal = () => {
     setSelectedMovie(null);
     setIsModalOpen(false);
+    const updatedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    setWishlist(updatedWishlist);
   };
 
   const handleWishlistToggle = (movie) => {
-    const isAlreadyWishlisted = wishlist.some((item) => item.id === movie.id);
-    if (isAlreadyWishlisted) {
-      setWishlist(wishlist.filter((item) => item.id !== movie.id));
+    const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    const isWishlisted = storedWishlist.some((item) => item.id === movie.id);
+  
+    if (isWishlisted) {
+      const updatedWishlist = storedWishlist.filter((item) => item.id !== movie.id);
+      localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
     } else {
-      setWishlist([...wishlist, movie]);
+      storedWishlist.push(movie);
+      localStorage.setItem('wishlist', JSON.stringify(storedWishlist));
     }
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    setWishlist([...storedWishlist]); // 찜 상태 변경 후 갱신
   };
+  
 
-  const isMovieWishlisted = (movieId) => {
-    return wishlist.some((item) => item.id === movieId);
-  };
+  
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      setWishlist(storedWishlist);
+    }
+  }, [isModalOpen]);  
 
   return (
     <div className="popular">
@@ -105,12 +133,12 @@ const Popular = () => {
       <div className="movie-grid">
         {popular.map((movie) => (
           <MovieCard
-          key={movie.id}
+          key={`${movie.id}-${wishlist.some((item) => item.id === movie.id)}`} // 상태 변화 강제 렌더링
           movie={movie}
-          onClick={() => handleMovieClick(movie)}
+          isWishlisted={wishlist.some((item) => item.id === movie.id)}
           onWishlistToggle={handleWishlistToggle}
-          isWishlisted={isMovieWishlisted(movie.id)}
-        />
+          onClick={() => handleMovieClick(movie)}
+          />
         ))}
       </div>
       {loading && <LoadingSpinner />}

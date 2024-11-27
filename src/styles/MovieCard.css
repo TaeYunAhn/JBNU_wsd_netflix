@@ -17,15 +17,19 @@
 
 .movie-poster {
   width: 120px;
-  aspect-ratio: 2 / 3; /* 포스터 비율 유지 */
+  aspect-ratio: 2 / 3;
   object-fit: cover;
   border-radius: 5px;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .movie-poster:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* 포스터 hover 시 그림자 추가 */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.movie-poster.wishlisted {
+  filter: grayscale(100%);
 }
 
 .movie-details {
@@ -34,7 +38,7 @@
   align-items: center;
   margin-top: 10px;
   text-align: center;
-  min-height: 50px; /* 버튼 영역 확보 */
+  min-height: 50px;
 }
 
 .movie-details h3 {
@@ -45,27 +49,27 @@
 
 .wishlist-btn {
   padding: 5px 20px;
-  background: none; /* 버튼 기본 배경 */
-  color: #4c4c4c; /* 버튼 글씨 색상 */
+  background: none;
+  color: #4c4c4c;
   border: none;
   border-radius: 50px;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease;
-  white-space: nowrap; /* 텍스트 한 줄 유지 */
+  white-space: nowrap;
 }
 
 .wishlist-btn:hover {
   transform: scale(1.05);
-  background: #f40612; /* hover 시 배경색 변경 */
+  background: #f40612;
 }
 
 .wishlist-btn.disabled {
-  background: #4caf50; /* 찜 완료 상태 배경색 */
-  cursor: not-allowed; /* 클릭 불가 상태 */
-  transform: none; /* hover 효과 제거 */
+  background: #4caf50;
+  cursor: pointer;
+  transform: none;
 }
 
 .wishlist-btn.disabled:hover {
-  background: #4caf50; /* hover 시 색상 유지 */
-  transform: none; /* 확대 효과 제거 */
+  background: #4caf50;
+  transform: none;
 }

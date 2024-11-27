@@ -11,10 +11,11 @@ const Wishlist = () => {
   const [page, setPage] = useState(1); // 페이지 상태 추가
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
 
+  // 로컬 스토리지에서 찜한 영화 목록 불러오기
   const loadWishlist = useCallback(() => {
     setLoading(true);
     const storedWishlist = LocalStorageService.get('wishlist') || [];
-    setWishlist((prev) => [...prev, ...storedWishlist.slice((page - 1) * 10, page * 10)]);
+    setWishlist(storedWishlist.slice((page - 1) * 10, page * 10)); // prev 제거
     setLoading(false);
   }, [page]);
 
@@ -22,13 +23,11 @@ const Wishlist = () => {
     loadWishlist();
   }, [loadWishlist]);
 
-  const handleScroll = useCallback(() => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || 
-      loading
-    ) return;
-    setPage((prev) => prev + 1);
-  }, [loading]);
+  // 스크롤 이벤트 핸들러
+  const handleScroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || loading) return;
+    setPage((prev) => prev + 1); // 다음 페이지 로드
+  };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -37,9 +36,10 @@ const Wishlist = () => {
 
   // 찜한 영화 목록에서 삭제
   const handleRemoveFromWishlist = (movie) => {
-    const updatedWishlist = wishlist.filter((item) => item.id !== movie.id);
+    const storedWishlist = LocalStorageService.get('wishlist') || [];
+    const updatedWishlist = storedWishlist.filter((item) => item.id !== movie.id);
     LocalStorageService.set('wishlist', updatedWishlist);
-    setWishlist(updatedWishlist);
+    setWishlist(updatedWishlist.slice(0, page * 10)); // 현재 페이지까지만 표시
   };
 
   // 영화 클릭 시 모달 열기
@@ -74,6 +74,7 @@ const Wishlist = () => {
           ))}
         </div>
       )}
+      {loading && <p>로딩 중...</p>} {/* 로딩 중 메시지 추가 */}
 
       {/* MovieModal 렌더링 */}
       {isModalOpen && selectedMovie && (
