@@ -18,7 +18,6 @@ const AppWrapper = () => {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      // 이미 초기화되었다면 처리하지 않음
       if (isInitialized) return;
       
       try {
@@ -28,11 +27,9 @@ const AppWrapper = () => {
         const currentPath = window.location.pathname;
 
         if (loggedInUser) {
-          // 첫 진입시에만 홈으로 이동
           if (currentPath === '/signin') {
-            navigate('/');
+            navigate('/home');  // '/'대신 '/home'으로 변경
           }
-          // 새로고침시에는 현재 페이지 유지
         } else if (rememberedUser) {
           const users = JSON.parse(localStorage.getItem('users')) || [];
           const user = users.find((u) => u.email === rememberedUser.email);
@@ -47,12 +44,11 @@ const AppWrapper = () => {
                 wishlist: user.wishlist || []
               }));
               if (currentPath === '/signin') {
-                navigate('/');
+                navigate('/home');  // '/'대신 '/home'으로 변경
               }
             } else {
               localStorage.removeItem('rememberMe');
               navigate('/signin');
-    
             }
           } else {
             localStorage.removeItem('rememberMe');
@@ -74,7 +70,7 @@ const AppWrapper = () => {
   }, [navigate, isInitialized]);
 
   if (isLoading) {
-    return <div>로딩중...</div>; // 또는 로딩 스피너 컴포넌트
+    return <div>로딩중...</div>;
   }
 
   return (
@@ -82,9 +78,10 @@ const AppWrapper = () => {
       <Header />
       <ScrollToTop />
       <Routes>
+        <Route path="/" element={<Navigate to="/home" />} /> {/* 루트 경로를 /home으로 리다이렉트 */}
         <Route path="/signin" element={<SignIn />} />
         <Route
-          path="/"
+          path="/home"
           element={
             <PrivateRoute>
               <Home />
@@ -131,7 +128,7 @@ const AppWrapper = () => {
 // 메인 App 컴포넌트
 const App = () => {
   return (
-    <Router>
+    <Router basename="/JBNU_wsd_netflix">
       <AppWrapper />
     </Router>
   );
