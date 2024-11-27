@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/JBNU_wsd_netflix/static/css/main.a93f7b74.css",
+    "main.js": "/JBNU_wsd_netflix/static/js/main.d9b2208e.js",
+    "static/media/terms.md": "/JBNU_wsd_netflix/static/media/terms.6ea1f451f583756f30a7.md",
+    "index.html": "/JBNU_wsd_netflix/index.html",
+    "main.a93f7b74.css.map": "/JBNU_wsd_netflix/static/css/main.a93f7b74.css.map",
+    "main.d9b2208e.js.map": "/JBNU_wsd_netflix/static/js/main.d9b2208e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a93f7b74.css",
+    "static/js/main.d9b2208e.js"
+  ]
+}
