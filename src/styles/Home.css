@@ -79,12 +79,13 @@
   border: none;
   color: black;
   padding: 10px 20px;
-  width: 100px;
+  width: 120px;  /* 너비를 120px로 증가 */
   border-radius: 50px;
   font-size: 1rem;
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s ease;
+  white-space: nowrap;  /* 텍스트가 줄바꿈되지 않도록 설정 */
 }
 
 .play-button:hover,
