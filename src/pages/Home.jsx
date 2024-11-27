@@ -98,7 +98,7 @@ const Home = () => {
                   className="details-button"
                   onClick={() => handleMovieClick(bannerMovie)}
                 >
-                  상세 정보
+                  상세정보
                 </button>
               </div>
             </div>
