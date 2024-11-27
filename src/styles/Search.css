@@ -2,80 +2,114 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 100vh;
 }
 
 .search h1 {
   text-align: center;
   margin-bottom: 30px;
   color: #333;
+  font-size: 2.5em;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 새로운 애니메이션 추가 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .filters {
   margin: 20px 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .filters input,
 .filters select,
 .filters button {
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  font-size: 14px;
+  padding: 12px 24px;
+  border-radius: 25px;
+  border: 2px solid rgba(229, 9, 20, 0.1);
+  background-color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
   outline: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .filters input:focus,
 .filters select:focus {
   border-color: #e50914;
-  box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.1);
+  box-shadow: 0 0 0 4px rgba(229, 9, 20, 0.15);
+  transform: translateY(-2px);
 }
 
 .filters button {
-  background-color: #e50914;
+  background: linear-gradient(45deg, #e50914, #ff3b30);
   color: white;
   border: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 .filters button:hover {
-  background-color: #f40612;
-  transform: translateY(-1px);
+  background: linear-gradient(45deg, #ff3b30, #e50914);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(229, 9, 20, 0.2);
 }
 
-/* 검색 입력창 너비 조정 */
-.filters input[type="text"] {
-  min-width: 250px;
+.filters button:active {
+  transform: translateY(0);
+}
+
+/* 검색 결과 없을 때 메시지 스타일 개선 */
+.search p {
+  text-align: center;
+  margin: 40px 0;
+  color: #666;
+  font-size: 1.2em;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
 }
 
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  gap: 25px;
+  padding: 30px;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-/* 로딩 메시지 스타일 */
-.search p {
-  text-align: center;
-  margin: 20px 0;
-  color: #666;
-}
-
-/* 스크롤 탑 버튼 */
+/* 스크롤 탑 버튼 개선 */
 .scroll-to-top {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
-  background-color: #e50914;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(45deg, #e50914, #ff3b30);
   color: white;
   border: none;
   border-radius: 50%;
@@ -83,39 +117,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-  z-index: 1000;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.9;
 }
 
 .scroll-to-top:hover {
-  background-color: #f40612;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 0 6px 16px rgba(229, 9, 20, 0.4);
+  opacity: 1;
 }
 
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-  .filters {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .filters input,
-  .filters select,
-  .filters button {
-    width: 100%;
-  }
-
-  .movie-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-    padding: 10px;
-  }
+/* 로딩 상태 개선 */
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #e50914;
+  font-size: 1.2em;
+  animation: pulse 1.5s infinite;
 }
 
-/* 다크 모드 지원 */
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* 다크 모드 개선 */
 @media (prefers-color-scheme: dark) {
   .search {
     background-color: #141414;
@@ -125,18 +154,56 @@
     color: #fff;
   }
 
+  .filters {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
   .filters input,
   .filters select {
-    background-color: #2f2f2f;
+    background-color: rgba(47, 47, 47, 0.9);
     color: #fff;
-    border-color: #404040;
+    border-color: rgba(255, 255, 255, 0.1);
   }
 
   .filters input::placeholder {
-    color: #aaa;
+    color: rgba(255, 255, 255, 0.6);
   }
 
   .search p {
     color: #aaa;
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* 반응형 디자인 개선 */
+@media (max-width: 768px) {
+  .search h1 {
+    font-size: 2em;
+  }
+
+  .filters {
+    padding: 15px;
+    border-radius: 20px;
+  }
+
+  .filters input,
+  .filters select,
+  .filters button {
+    width: 100%;
+    padding: 10px 20px;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .scroll-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
   }
 }

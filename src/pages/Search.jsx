@@ -229,7 +229,7 @@ const Search = () => {
           <option value="en">영어 ENG</option>
           <option value="ko">한국어 KOR</option>
           <option value="ja">일본어 JPN</option>
-          <option value="zh">중국어 CHN</option>
+          <option value="zh">미얀마어 MYA</option>
           <option value="de">독일어 DEU</option>
           <option value="it">이태리어 ITA</option>
           <option value="ru">러시아어 RUS</option>
