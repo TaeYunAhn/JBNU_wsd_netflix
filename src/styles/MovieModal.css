@@ -1,5 +1,4 @@
 /* 모달 오버레이 */
-/* 모달 오버레이 */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -16,30 +15,30 @@
 
 /* 모달 컨텐츠 */
 .modal-content {
-  background-color: #141414;  /* 넷플릭스 배경색 */
+  background-color: #141414;
   color: white;
   width: 90%;
-  max-width: 700px;  /* 최대 너비 줄임 */
-  max-height: 85vh;  /* 최대 높이 제한 */
+  max-width: 700px;
+  height: 600px;  /* 고정 높이 설정 */
   border-radius: 6px;
   padding: 20px;
   position: relative;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   animation: scaleIn 0.3s ease-in-out;
-  overflow-y: auto;  /* 내용이 넘칠 경우 스크롤 */
+  overflow: hidden;  /* 내용이 넘치지 않도록 */
 }
 
 /* 닫기 버튼 */
 .close-button {
-  position: fixed;  /* absolute에서 fixed로 변경 */
-  top: 20px;
-  right: 20px;
-  background: rgba(0, 0, 0, 0.7);  /* 배경색 추가 */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
   border: none;
   color: #fff;
   font-size: 24px;
   cursor: pointer;
-  z-index: 1001;  /* 더 높은 z-index */
+  z-index: 1001;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -58,20 +57,25 @@
 .modal-header {
   display: flex;
   gap: 20px;
+  height: 100%;  /* 부모 높이 전체 사용 */
+  overflow: hidden;  /* 내용이 넘치지 않도록 */
 }
 
 /* 영화 포스터 */
 .modal-poster {
-  width: 250px;  /* 포스터 크기 줄임 */
+  width: 250px;
+  height: auto;
   border-radius: 4px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;  /* 포스터 크기 고정 */
 }
 
 /* 영화 정보 섹션 */
 .modal-info {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: auto;  /* 정보 부분만 스크롤 가능 */
   padding-right: 10px;
+  height: 100%;  /* 부모 높이 전체 사용 */
 }
 
 .modal-info h2 {
@@ -79,6 +83,11 @@
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: bold;
+  position: sticky;  /* 제목 고정 */
+  top: 0;
+  background-color: #141414;
+  padding: 10px 0;
+  z-index: 1;
 }
 
 .modal-info p {
@@ -175,20 +184,32 @@
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .modal-content {
+    height: 80vh;  /* 모바일에서는 화면 높이에 맞춤 */
     width: 95%;
-    height: auto;
-    max-height: 90vh;
-    margin: 20px;
+    margin: 10px;
+  }
+
+  .modal-header {
+    flex-direction: column;
   }
 
   .modal-poster {
-    width: 100%;
-    max-width: 200px;  /* 모바일에서 포스터 크기 더 줄임 */
-    margin: 0 auto;
+    width: 200px;
+    margin: 0 auto 20px;
   }
 
-  .close-button {
-    top: 10px;
-    right: 10px;
+  .modal-info {
+    padding-right: 5px;
+  }
+
+  .modal-info h2 {
+    font-size: 20px;
+    padding: 5px 0;
+  }
+
+  .wishlist-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
   }
 }
