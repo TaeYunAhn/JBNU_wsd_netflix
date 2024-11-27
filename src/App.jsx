@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Popular from './pages/Popular';
 import Search from './pages/Search';
@@ -24,11 +24,11 @@ const AppWrapper = () => {
         await new Promise(resolve => setTimeout(resolve, 100));
         const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
         const rememberedUser = JSON.parse(localStorage.getItem('rememberMe'));
-        const currentPath = window.location.pathname;
+        const currentPath = window.location.hash; // pathname 대신 hash 사용
 
         if (loggedInUser) {
-          if (currentPath === '/signin') {
-            navigate('/home');  // '/'대신 '/home'으로 변경
+          if (currentPath === '#/signin') {
+            navigate('/home');
           }
         } else if (rememberedUser) {
           const users = JSON.parse(localStorage.getItem('users')) || [];
@@ -43,8 +43,8 @@ const AppWrapper = () => {
                 apiKey: user.apiKey,
                 wishlist: user.wishlist || []
               }));
-              if (currentPath === '/signin') {
-                navigate('/home');  // '/'대신 '/home'으로 변경
+              if (currentPath === '#/signin') {
+                navigate('/home');
               }
             } else {
               localStorage.removeItem('rememberMe');
@@ -78,7 +78,7 @@ const AppWrapper = () => {
       <Header />
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Navigate to="/home" />} /> {/* 루트 경로를 /home으로 리다이렉트 */}
+        <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/signin" element={<SignIn />} />
         <Route
           path="/home"
@@ -128,7 +128,7 @@ const AppWrapper = () => {
 // 메인 App 컴포넌트
 const App = () => {
   return (
-    <Router basename="/JBNU_wsd_netflix">
+    <Router>
       <AppWrapper />
     </Router>
   );
