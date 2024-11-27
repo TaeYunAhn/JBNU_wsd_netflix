@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/JBNU_wsd_netflix/static/css/main.886c5e95.css",
-    "main.js": "/JBNU_wsd_netflix/static/js/main.5545c2c1.js",
+    "main.css": "/JBNU_wsd_netflix/static/css/main.c8056538.css",
+    "main.js": "/JBNU_wsd_netflix/static/js/main.d3d6f9a3.js",
     "static/media/terms.md": "/JBNU_wsd_netflix/static/media/terms.6ea1f451f583756f30a7.md",
     "index.html": "/JBNU_wsd_netflix/index.html",
-    "main.886c5e95.css.map": "/JBNU_wsd_netflix/static/css/main.886c5e95.css.map",
-    "main.5545c2c1.js.map": "/JBNU_wsd_netflix/static/js/main.5545c2c1.js.map"
+    "main.c8056538.css.map": "/JBNU_wsd_netflix/static/css/main.c8056538.css.map",
+    "main.d3d6f9a3.js.map": "/JBNU_wsd_netflix/static/js/main.d3d6f9a3.js.map"
   },
   "entrypoints": [
-    "static/css/main.886c5e95.css",
-    "static/js/main.5545c2c1.js"
+    "static/css/main.c8056538.css",
+    "static/js/main.d3d6f9a3.js"
   ]
 }
