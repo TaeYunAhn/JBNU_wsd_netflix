@@ -1,104 +1,198 @@
+/* 모달 오버레이 */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
+/* 모달 컨텐츠 */
 .modal-content {
-  background: #fff;
-  color: #000;
-  border-radius: 8px;
-  max-width: 600px;
+  background-color: #181818;
+  color: white;
   width: 90%;
+  max-width: 850px;
+  border-radius: 6px;
   padding: 20px;
   position: relative;
-  max-height: 90vh; /* Ensure the modal doesn't exceed the viewport height */
-  overflow-y: auto; /* Add scroll behavior for overflowing content */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  animation: scaleIn 0.3s ease-in-out;
 }
 
+/* 닫기 버튼 */
 .close-button {
   position: absolute;
-  color: #000;
-  top: 20px;
-  right: 20px;
-  width: 24px;
-  height: 24px;
-  background: none;
+  top: 10px;
+  right: 10px;
+  background: transparent;
   border: none;
-  font-size: 3rem;
+  color: #fff;
+  font-size: 24px;
   cursor: pointer;
-  line-height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease;
+  z-index: 1;
+  transition: transform 0.2s;
 }
 
 .close-button:hover {
-  transform: rotate(90deg);
-  background-color: none;
+  transform: scale(1.1);
 }
 
+/* 모달 헤더 (포스터 + 정보) */
 .modal-header {
   display: flex;
   gap: 20px;
 }
 
+/* 영화 포스터 */
 .modal-poster {
-  width: 150px;
-  height: calc(150px * 1.5); /* 2:3 비율 계산 (150px * 1.5) */
-  object-fit: cover; /* 이미지 비율 왜곡 방지 */
-  border-radius: 8px;
+  width: 300px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
+/* 영화 정보 섹션 */
 .modal-info {
   flex: 1;
-  font-size: 0.9rem;
+  overflow-y: auto;
+  padding-right: 10px;
 }
 
 .modal-info h2 {
-  margin: 0;
-  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .modal-info p {
   margin: 10px 0;
+  color: #d2d2d2;
+  line-height: 1.6;
+  font-size: 14px;
 }
 
 .modal-info strong {
+  color: #fff;
   font-weight: bold;
 }
 
+/* 찜하기 버튼 */
 .wishlist-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background: #007bff;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #e50914;
   color: white;
   border: none;
-  border-radius: 50px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s ease;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.2s ease;
 }
 
 .wishlist-button:hover {
-  background: #0056b3;
+  background-color: #f40612;
+  transform: scale(1.02);
 }
 
 .wishlist-button.active {
-  background: #dc3545; /* 찜 해제 상태 */
+  background-color: #333;
 }
 
+.wishlist-button.active:hover {
+  background-color: #444;
+}
+
+/* 로딩 및 에러 메시지 */
+.loading-message, 
+.error-message {
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+}
+
+.error-message {
+  color: #e50914;
+}
+
+/* 스크롤바 스타일링 */
+.modal-info::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-info::-webkit-scrollbar-track {
+  background: #181818;
+}
+
+.modal-info::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 4px;
+}
+
+.modal-info::-webkit-scrollbar-thumb:hover {
+  background: #4d4d4d;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 반응형 디자인 */
 @media (max-width: 768px) {
+  .modal-header {
+    flex-direction: column;
+  }
+
   .modal-poster {
-    width: auto; /* 작은 화면에서는 더 작은 크기로 표시 */
-    aspect-ratio: 2 / 3;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 15px;
+  }
+
+  .modal-info h2 {
+    font-size: 20px;
+    margin-top: 15px;
+  }
+
+  .modal-info p {
+    font-size: 13px;
+  }
+
+  .wishlist-button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
   }
 }
