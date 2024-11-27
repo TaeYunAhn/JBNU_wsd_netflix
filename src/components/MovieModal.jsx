@@ -7,37 +7,45 @@ import '../styles/MovieModal.css';
 const MovieModal = ({ movie, onClose }) => {
   const navigate = useNavigate();
   const { id, title, overview, release_date, vote_average, poster_path } = movie;
-  const [isWishlisted, setIsWishlisted] = useState(false); // 찜 상태 관리
-  const [detailedInfo, setDetailedInfo] = useState(null); // 영화 세부 정보 상태
-  const [apiKey, setApiKey] = useState(null); // 로그인된 사용자의 API 키
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [detailedInfo, setDetailedInfo] = useState(null);
+  const [error, setError] = useState(null);
 
-  // 로그인 여부 확인
-  useEffect(() => {
-    const storedApiKey = JSON.parse(localStorage.getItem('loggedInUser'))?.apiKey;
-    if (!storedApiKey) {
-      navigate('/signin'); // 로그인 화면으로 리다이렉트
-    } else {
-      setApiKey(storedApiKey); // API 키 설정
-    }
-  }, [navigate]);
+  // API 키 가져오기
+  const getApiKey = () => {
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
+    return user?.apiKey;
+  };
 
   // 영화 세부 정보 가져오기
   useEffect(() => {
-    if (apiKey) {
-      const fetchMovieDetails = async () => {
-        try {
-          const response = await axios.get(
-            `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=ko-KR`
-          );
-          setDetailedInfo(response.data);
-        } catch (error) {
-          console.error('Error fetching movie details:', error);
-        }
-      };
+    const fetchMovieDetails = async () => {
+      const apiKey = getApiKey();
+      
+      if (!apiKey) {
+        setError('API 키를 찾을 수 없습니다.');
+        return;
+      }
 
-      fetchMovieDetails();
-    }
-  }, [id, apiKey]);
+      try {
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/movie/${id}`,
+          {
+            params: {
+              api_key: apiKey,
+              language: 'ko-KR'
+            }
+          }
+        );
+        setDetailedInfo(response.data);
+      } catch (error) {
+        console.error('Error fetching movie details:', error);
+        setError('영화 정보를 불러오는데 실패했습니다.');
+      }
+    };
+
+    fetchMovieDetails();
+  }, [id]);
 
   // 초기 찜 상태 확인
   useEffect(() => {
@@ -72,11 +80,23 @@ const MovieModal = ({ movie, onClose }) => {
     setIsWishlisted(!isWishlisted);
   };
 
+  if (error) {
+    return (
+      <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-content">
+          <button className="close-button" onClick={onClose}>×</button>
+          <p className="error-message">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!detailedInfo) {
     return (
       <div className="modal-overlay" onClick={onClose}>
         <div className="modal-content">
-          <p>Loading...</p>
+          <button className="close-button" onClick={onClose}>×</button>
+          <p className="loading-message">로딩중...</p>
         </div>
       </div>
     );
