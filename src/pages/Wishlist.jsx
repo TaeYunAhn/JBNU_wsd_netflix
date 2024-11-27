@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import LocalStorageService from '../services/LocalStorageService';
 import WishlistCard from '../components/WishlistCard';
 import MovieModal from '../components/MovieModal';
@@ -8,11 +8,32 @@ const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null); // 선택된 영화
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const [page, setPage] = useState(1); // 페이지 상태 추가
+  const [loading, setLoading] = useState(false); // 로딩 상태 추가
 
-  // 로컬 스토리지에서 찜한 영화 목록 불러오기
+  const loadWishlist = useCallback(() => {
+    setLoading(true);
+    const storedWishlist = LocalStorageService.get('wishlist') || [];
+    setWishlist((prev) => [...prev, ...storedWishlist.slice((page - 1) * 10, page * 10)]);
+    setLoading(false);
+  }, [page]);
+
   useEffect(() => {
-    setWishlist(LocalStorageService.get('wishlist') || []);
-  }, []);
+    loadWishlist();
+  }, [loadWishlist]);
+
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || 
+      loading
+    ) return;
+    setPage((prev) => prev + 1);
+  }, [loading]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   // 찜한 영화 목록에서 삭제
   const handleRemoveFromWishlist = (movie) => {
