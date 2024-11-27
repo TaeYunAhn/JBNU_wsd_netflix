@@ -3,19 +3,32 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #000; /* 배경 검정색 */
+  min-height: 100vh;
+  background: url("https://assets.nflxext.com/ffe/siteui/vlv3/9134db96-10d6-4a64-a619-a21da22f8999/a449fabb-05e4-4c8a-b062-b0bec7d03085/KR-ko-20240115-trifectadaily-perspective_alpha_website_large.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.signin-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .card-wrapper {
-  width: 350px;
-  height: 500px;
+  width: 450px;
   perspective: 1000px;
+  position: relative;
+  z-index: 1;
 }
 
 .card-container {
   width: 100%;
-  height: 100%;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.8s ease-in-out;
@@ -28,18 +41,14 @@
 .card {
   position: absolute;
   width: 100%;
-  height: 110%;
-  background: #fff; /* 카드 배경 흰색으로 변경 */
-  color: #000;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  padding: 60px 68px;
   backface-visibility: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  color: #000; /* 글자 색상 검정색으로 변경 */
-  transform: translateY(-5rem); /* 위로 10px 이동 */
+  color: white;
 }
 
 .card.front {
@@ -47,143 +56,114 @@
 }
 
 .card.back {
-  transform: rotateY(180deg) translateY(-5rem);
+  transform: rotateY(180deg);
 }
 
-/* Input Field */
+/* Input Fields */
 input {
-  width: 80%;
-  padding: 10px;
+  width: 100%;
+  padding: 16px 20px;
   margin: 10px 0;
-  border: 1px solid #555;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  color: #000;
-  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #333;
+  color: white;
+  font-size: 16px;
   outline: none;
-  box-shadow: none;
-  transition: all 0.4s ease-in-out; /* 부드러운 애니메이션 */
+  transition: all 0.3s ease;
 }
 
-/* Input Field Focused State */
 input:focus {
-  border: 2px solid #007bff; /* 테두리 강조 */
-  background-color: #e6f0ff; /* 밝은 파란색 배경 */
-  transform: scale(1.05); /* 필드 크기 확대 */
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* 부드러운 그림자 추가 */
-  border-radius: 10px; /* 둥근 모서리 증가 */
+  background: #454545;
 }
 
 input::placeholder {
-  color: #777; /* 플레이스홀더 색상 어둡게 변경 */
-  font-size: 0.9rem;
-  transition: all 0.3s ease-in-out;
-}
-
-input:focus::placeholder {
-  font-size: 0.75rem; /* Placeholder 크기 축소 */
-  color: #555;
+  color: #8c8c8c;
 }
 
 /* Button */
 button {
-  width: 80%;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background-color: #007bff;
+  width: 100%;
+  padding: 16px;
+  background: #e50914;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
-  gap: 10px; /* 버튼 간 간격 설정 */
-  transition: all 0.3s ease-in-out;
+  margin: 24px 0 12px;
+  transition: background 0.2s;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background: #f40612;
 }
 
-/* Button */
+/* Terms Button */
 term-button {
-  width: 80%;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: rgb(118, 118, 118);
+  color: #8c8c8c;
   cursor: pointer;
-  gap: 3px; /* 버튼 간 간격 설정 */
-  transition: all 0.3s ease-in-out;
+  transition: color 0.3s;
+  text-align: center;
+  margin: 10px 0;
 }
 
 term-button:hover {
+  color: #fff;
   text-decoration: underline;
-  color: #f44336;
 }
 
-/* 로그인 회원가입 전환버튼 */
+/* Text and Links */
 .signin-container span {
-  font-size: 1rem; /* 글씨 크기를 조금 키움 */
-  color: #007bff; /* 파란색으로 변경 */
+  color: #8c8c8c;
   cursor: pointer;
+  font-size: 16px;
 }
+
 .signin-container span:hover {
   text-decoration: underline;
 }
 
-/* 본문 */
-p{
-  font-size: 1rem; /* 글씨 크기를 조금 키움 */
-  color: #000000; /* 검정색 */
+p {
+  color: white;
+  font-size: 16px;
+  margin: 5px 0;
 }
 
-
-/* Error Message 위치 조정 */
+/* Error Messages */
 .error {
-  color: #f44336;
-  font-size: 0.85rem;
-  margin-top: 5px;
-  margin-bottom: -5px; /* 에러 메시지가 입력 바로 아래에 위치하도록 조정 */
-  text-align: left; /* 에러 메시지 왼쪽 정렬 */
+  color: #e87c03;
+  font-size: 13px;
+  margin-top: 6px;
+  text-align: left;
+  width: 100%;
 }
 
-input + .error {
-  margin-top: -10px; /* 입력 필드 바로 아래에 위치하게 조정 */
-  margin-left: 10%;
-  width: 80%;
-}
-
-/* Checkbox Styling */
+/* Checkbox */
 label {
   display: flex;
-  align-items: center; /* 수직 정렬 */
-  justify-content: flex-start; /* 왼쪽 정렬 */
-  gap: 8px; /* 체크박스와 텍스트 간격 */
-  font-size: 0.9rem;
-  color: #000;
-  margin-top: 10px;
+  align-items: center;
+  gap: 8px;
+  color: #b3b3b3;
+  font-size: 13px;
+  margin: 10px 0;
 }
 
 input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
   margin: 0;
-  width: auto;
-  height: auto;
 }
 
-/* Modal Overlay */
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -191,28 +171,20 @@ input[type="checkbox"] {
 }
 
 .modal {
-  background: white;
+  background: #181818;
+  color: white;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 4px;
   width: 90%;
   max-width: 600px;
-  max-height: 80%;
+  max-height: 80vh;
   overflow-y: auto;
-  animation: slideIn 0.5s ease-out; /* 애니메이션 추가 */
+  animation: slideIn 0.5s ease-out;
 }
 
-.modal-content h2 {
-  margin-top: 0;
-}
-
-.modal-content button {
-  margin-top: 20px;
-}
-
-/* Modal Slide-in Animation */
 @keyframes slideIn {
   from {
-    transform: translateY(-50%);
+    transform: translateY(-50px);
     opacity: 0;
   }
   to {
